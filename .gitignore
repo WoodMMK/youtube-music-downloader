@@ -1,0 +1,19 @@
+# Binaries & Executables (auto-downloaded by script)
+*.exe
+*.old
+*.zip
+
+# User Personal Configurations & Archive History
+playlist.txt
+downloaded.txt
+
+# Media & Temp Files
+*.mp3
+temp/
+test*.*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
