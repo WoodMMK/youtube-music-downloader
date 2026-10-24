@@ -1,78 +1,90 @@
-# 🎵 YouTube Music Downloader & Auto-Sync (MP3)
+# YouTube Music Downloader and Auto-Sync
 
-โปรแกรมและสคริปต์สำหรับดาวน์โหลดเพลงจาก YouTube Playlist แปลงเป็นไฟล์ MP3 คุณภาพสูง บันทึกลงเครื่องคอมพิวเตอร์หรือ Flash Drive พร้อมหน้าต่างตั้งค่า (GUI) ใช้งานง่าย รองรับการจัดเรียงหมายเลขแทร็ก (Track Number) ฝังภาพปกลงไฟล์เพลง และซิงค์ลบเพลงที่ถูกคัดออกอัตโนมัติ (True Sync)
+A batch and PowerShell automation script to download YouTube playlists as high quality MP3 files, embed metadata and cover art, re-order track numbers to match playlist order, and automatically remove deleted songs.
 
-[![Download ZIP](https://img.shields.io/badge/Download-ZIP%20File%20(พร้อมใช้งาน)-brightgreen?style=for-the-badge&logo=windows)](https://github.com/WoodMMK/youtube-music-downloader/archive/refs/heads/main.zip)
-
----
-
-## ✨ Features
-
-- 🖥️ **มีหน้าต่างตั้งค่า (GUI Dialog)**: ดับเบิลคลิกเปิดโปรแกรม จะมีหน้าต่างขึ้นมาให้วางลิงก์และเลือกโฟลเดอร์ปลายทางได้ทันที **ไม่ต้องแก้โค้ดหรือแก้ไฟล์ใดๆ เอง**
-- 📋 **ดึงคลิปบอร์ดอัตโนมัติ**: หากก็อปลิงก์ YouTube Playlist ค้างไว้ในเครื่อง เมื่อเปิดโปรแกรมจะวางลิงก์ให้อัตโนมัติทันที
-- 📁 **เลือกโฟลเดอร์ปลายทางได้อย่างอิสระ**: มีปุ่มกดเลือกโฟลเดอร์สำหรับบันทึกเพลง ไม่ว่าจะเป็นโฟลเดอร์ในเครื่อง (`C:`, `D:`) หรือ Flash Drive (`E:`, `F:`)
-- ⚡ **รันได้ทันที**: ไม่ต้องติดตั้งโปรแกรมอะไรล่วงหน้า สคริปต์จะดาวน์โหลดเครื่องมือที่จำเป็น (`yt-dlp`, `ffmpeg`, `deno`) ให้แบบอัตโนมัติในการรันครั้งแรก
-- 🎧 **คุณภาพเสียงสูงสุด**: บันทึกเป็นไฟล์ MP3 คุณภาพดีที่สุด (`--audio-quality 0` / 320 kbps)
-- 🖼️ **ฝังภาพปก & ข้อมูลเพลงครบถ้วน**: แปลงภาพปกเป็น JPG ฝังเข้า Tag ID3v2.3 พร้อมระบุ Artist, Title และ Album อย่างถูกต้อง
-- 🔄 **True Sync (คลังเพลงตรงกับ Playlist เสมอ)**:
-  - เพลงที่เคยโหลดไว้แล้วจะถูกข้ามอย่างรวดเร็ว ไม่โหลดซ้ำ
-  - หากมีเพลงที่ถูกลบออกจาก YouTube Playlist สคริปต์จะค้นหาและลบเพลงนั้นออกจากโฟลเดอร์ให้อัตโนมัติ
-- 🔢 **เรียงลำดับ Track Number อัตโนมัติ**: จัดเรียง Tag Track Number (`1/N` ถึง `N/N`) ตามลำดับเพลงใน YouTube Playlist ทำให้เครื่องเสียงรถยนต์หรือเครื่องเล่นเพลงเล่นเพลงตามลำดับเป๊ะๆ
+[![Download ZIP](https://img.shields.io/badge/Download-ZIP%20Archive-brightgreen?style=for-the-badge&logo=windows)](https://github.com/WoodMMK/youtube-music-downloader/archive/refs/heads/main.zip)
 
 ---
 
-## 📋 Requirements
+## Features
 
-- **ระบบปฏิบัติการ**: Windows 10 หรือ Windows 11 (มีคำสั่ง `curl.exe`, `tar.exe` และ `powershell.exe` ติดตั้งมาพร้อมกับ Windows อยู่แล้ว)
-- **การเชื่อมต่อ**: อินเทอร์เน็ตสำหรับดาวน์โหลดเครื่องมือและเพลง
-
----
-
-## 🚀 วิธีดาวน์โหลดและใช้งาน (Quick Start)
-
-### 1. ดาวน์โหลดโปรแกรม
-คลิกที่ปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์ `.zip` มาไว้ที่เครื่องของคุณ:
-
-👉 **[ดาวน์โหลดไฟล์ ZIP (คลิกที่นี่)](https://github.com/WoodMMK/youtube-music-downloader/archive/refs/heads/main.zip)**
-
-*(หรือใช้คำสั่ง `git clone https://github.com/WoodMMK/youtube-music-downloader.git`)*
-
-### 2. แตกไฟล์ ZIP
-คลิกขวาที่ไฟล์ `.zip` ที่โหลดมา แล้วเลือก **Extract All... (แตกไฟล์ทั้งหมด)**
-
-### 3. เริ่มใช้งาน (ดับเบิลคลิก `script.bat`)
-1. ดับเบิลคลิกที่ไฟล์ **`script.bat`**
-2. หน้าต่างตั้งค่าจะปรากฏขึ้นมา:
-   - **วางลิงก์ YouTube Playlist**: วางลิงก์เพลย์ลิสต์เพลงของคุณ (หากกดก็อปลิงก์ไว้แล้ว โปรแกรมจะวางให้อัตโนมัติ)
-   - **เลือกโฟลเดอร์ปลายทาง**: กดปุ่ม **"เลือกโฟลเดอร์..."** เพื่อเลือกโฟลเดอร์ที่ต้องการบันทึกเพลง (สามารถเลือก Flash Drive หรือโฟลเดอร์ในคอมพิวเตอร์ได้)
-   - **ซิงค์คลังเพลง**: เลือกว่าต้องการให้ลบเพลงที่ถูกตัดออกจาก Playlist อัตโนมัติหรือไม่
-3. กดปุ่ม **"🚀 เริ่มดาวน์โหลด"** (หรือกด Enter)
-4. โปรแกรมจะจัดการดาวน์โหลด แปลงไฟล์ และซิงค์เพลงให้จนเสร็จสิ้น!
-
-> 💡 **หมายเหตุ:** โปรแกรมจะจดจำการตั้งค่าล่าสุดไว้เสมอ ครั้งต่อไปที่เปิดใช้งาน คุณสามารถกดปุ่ม **เริ่มดาวน์โหลด** เพื่อซิงค์เพลงใหม่ได้ทันที
+- Graphical Setup Window: A native configuration dialog opens on launch to provide the playlist URL and select the destination folder. No manual file editing required.
+- Automatic Clipboard Detection: Automatically detects and pastes YouTube playlist links from the clipboard.
+- Custom Destination Folder: Choose any target folder on local drives or removable USB flash drives using the native folder browser.
+- Zero Setup: Automatically downloads yt-dlp, ffmpeg, and deno into the bin folder on first run. No manual tool installation needed.
+- Best Audio Quality: Converts audio to high quality MP3 using VBR 0 at 320 kbps.
+- Embedded Cover Art and Metadata: Converts thumbnails to JPG and embeds ID3v2.3 tags with artist, title, and album info.
+- True Sync: Skips previously downloaded songs and deletes songs locally if they were removed from the YouTube playlist.
+- Automatic Track Numbering: Re-indexes ID3 track numbers from 1 to total tracks to ensure car stereos and media players play songs in exact playlist sequence.
 
 ---
 
-## 📁 โครงสร้างโปรเจกต์ (Project Structure)
+## Requirements
+
+- Operating System: Windows 10 or Windows 11 with built-in curl, tar, and PowerShell.
+- Network: Active internet connection.
+
+---
+
+## Setup and Usage Guide
+
+### 1. Download the Project
+Download the ZIP archive using the badge link above, or clone this repository:
+```bash
+git clone https://github.com/WoodMMK/youtube-music-downloader.git
+```
+
+### 2. Extract Archive
+Extract the downloaded ZIP file to any folder on your computer.
+
+### 3. Launch and Configure
+Double click Start.bat to begin.
+
+You can configure your download settings in two ways:
+
+#### Method 1 - Graphical Setup Dialog
+1. The setup window appears automatically on launch.
+2. Paste your YouTube playlist URL, or let the dialog auto-fill it from your clipboard.
+3. Click Browse to select your destination folder on your computer or USB flash drive.
+4. Choose whether to enable True Sync to remove deleted tracks.
+5. Click Start Download or press Enter.
+
+#### Method 2 - Direct Configuration File
+For headless environments or direct configuration without the setup window, create or edit bin/config.txt:
+```text
+PLAYLIST_URL=https://www.youtube.com/playlist?list=YOUR_PLAYLIST_ID
+DOWNLOAD_PATH=C:\Users\username\Music\YouTubeMusic
+ENABLE_SYNC=1
+```
+
+Settings are saved in bin/config.txt and will be remembered on subsequent runs.
+
+---
+
+## Project Structure
 
 ```text
 youtube-music-downloader/
-├── script.bat               # ตัวรันหลัก (ดับเบิลคลิกไฟล์นี้เพื่อเริ่มใช้งาน)
-├── gui.ps1                  # หน้าต่างตั้งค่ากราฟิก (GUI Input Dialog)
-├── .gitignore               # กำหนดไม่ให้เอาไฟล์ binary และข้อมูลส่วนตัวขึ้น Git
-└── README.md                # คู่มือการใช้งาน
+├── Start.bat                # Main launcher - double click to run
+├── bin/                     # Internal tools, scripts, and local config
+│   ├── gui.ps1
+│   └── config.txt           # Created automatically on first run
+├── .gitignore               # Excludes binary files and local configs
+└── README.md                # Documentation
 ```
 
-> **ข้อมูลความปลอดภัย:** ไฟล์ตั้งค่าส่วนตัว (`config.txt`, `playlist.txt`) และไฟล์เครื่องมือขนาดใหญ่ (`*.exe`) จะถูกยกเว้นใน `.gitignore` ไม่ถูกนำขึ้น GitHub
+Binaries and local configurations are excluded via .gitignore and will not be pushed to GitHub.
 
 ---
 
-## 🛠️ เครื่องมือที่สคริปต์เรียกใช้อัตโนมัติ
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - ตัวดาวน์โหลดวิดีโอ/เสียงคุณภาพสูง
-- [FFmpeg](https://ffmpeg.org/) - ตัวแปลงไฟล์เสียงเป็น MP3 และจัดการ ID3 Tag
-- [Deno](https://deno.land/) - ตัวรัน JavaScript Runtime สำหรับซัพพอร์ตการทำงานของ yt-dlp
+## Tools Used
+
+- yt-dlp: Audio and video downloader
+- FFmpeg: Audio converter and ID3 metadata tagger
+- Deno: JavaScript runtime supporting yt-dlp extraction
 
 ---
 
-## ⚖️ ข้อกำหนดการใช้งาน (Disclaimer)
-โปรเจกต์นี้จัดทำขึ้นเพื่อการศึกษาและการใช้งานส่วนบุคคลเท่านั้น ผู้ใช้งานควรปฏิบัติตามข้อกำหนดการใช้งานของ YouTube และลิขสิทธิ์ของเจ้าของผลงานเพลง
+## Disclaimer
+
+This project is intended for educational and personal use only. Users must comply with YouTube Terms of Service and applicable copyright laws.
