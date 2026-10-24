@@ -5,6 +5,8 @@
 
 # User Personal Configurations & Archive History
 playlist.txt
+config.txt
+*.ini
 downloaded.txt
 
 # Media & Temp Files
